@@ -3,7 +3,7 @@ from transformers import pipeline
 
 # Load the text classification model pipeline
 classifier = pipeline("text-classification",
-                      model='distilbert/distilbert-base-uncased-finetuned-sst-2-english',
+                      model='bhadresh-savani/distilbert-base-uncased-emotion',
                       return_all_scores=True)
 
 # Streamlit application title
