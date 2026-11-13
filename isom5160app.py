@@ -1,10 +1,6 @@
 import streamlit as st
 from transformers import pipeline
 
-st.title("ISOM5160")
-st.write("ISOM5160 - Python Programming for Business Applications")
-
-
 # Load the text classification model pipeline
 classifier = pipeline("text-classification",
                       model='distilbert/distilbert-base-uncased-finetuned-sst-2-english',
