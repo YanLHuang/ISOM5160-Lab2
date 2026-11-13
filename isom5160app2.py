@@ -1,9 +1,10 @@
 
 
+
 import streamlit as st
 from transformers import pipeline
 
-# Load the text classification model
+# Load phishing email detection model
 @st.cache_resource
 def load_model():
     return pipeline(
@@ -14,30 +15,30 @@ def load_model():
 
 classifier = load_model()
 
-# Streamlit application title
-st.title("Text Classification for you")
-st.write("Classification for whether a phishing email or not")
+st.title("Phishing Email Detection")
+st.write("Classify whether an email is phishing or safe.")
 
-# Text input
-text = st.text_area("Enter the text to classify", "")
+text = st.text_area("Enter email text:", "")
 
-# Perform text classification
 if st.button("Classify"):
     if text.strip():
-        results = classifier(text, top_k=None)
+        result = classifier(
+            text,
+            truncation=True,
+            max_length=256
+        )[0]
 
-        # Find the highest score
-        max_score = float("-inf")
-        max_label = ""
+        label_map = {
+            "LABEL_0": "Safe Email",
+            "LABEL_1": "Phishing Email"
+        }
 
-        for result in results:
-            if result["score"] > max_score:
-                max_score = result["score"]
-                max_label = result["label"]
+        label = label_map.get(result["label"], result["label"])
 
         st.write("Text:", text)
-        st.write("Label:", max_label)
-        st.write("Score:", max_score)
+        st.write("Label:", label)
+        st.write("Score:", result["score"])
     else:
         st.warning("Please enter some text.")
+
 
